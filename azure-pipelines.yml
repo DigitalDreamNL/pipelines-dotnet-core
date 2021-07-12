@@ -11,6 +11,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  azureSubscription: 'Visual Studio Subscription (Thei)'
 
 steps:
 - task: DotNetCoreCLI@2
@@ -30,4 +31,11 @@ steps:
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'myWebsiteName'
+    artifactName: 'pipelines-dotnet-core-artifact'
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: $(azureSubscription)
+    appName: shipshapesurvey
+    appType: webAppLinux
+    package: $(System.DefaultWorkingDirectory)/**/*.zip
