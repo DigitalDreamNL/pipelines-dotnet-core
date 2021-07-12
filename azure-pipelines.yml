@@ -13,34 +13,19 @@ variables:
   buildConfiguration: 'Release'
   azureSubscription: 'Visual Studio Subscription (Thei)'
 
-steps:
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    command: build
-    projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
-
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
 
-- script: |
-    survey_taker/npm install
-    survey_taker/npm run build
-  displayName: 'npm install and build'
+- task: Bash@3
+  inputs:
+    workingDirectory: survey_taker
+    script: npm install && npm run build
 
 - task: CopyFiles@2
   inputs:
-    Contents: 'build/**' # Pull the build directory (React)
+    Contents: 'survey_taker/build/**' # Pull the build directory (React)
     TargetFolder: '$(Build.ArtifactStagingDirectory)/survey_taker'
 
 - task: PublishBuildArtifacts@1
@@ -57,6 +42,21 @@ steps:
   inputs:
      workingDir: 'survey_taker'
      command: 'run build'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
 
 - task: PublishPipelineArtifact@1
   inputs:
