@@ -12,7 +12,8 @@ pool:
 variables:
   buildConfiguration: 'Release'
   azureSubscription: 'Visual Studio Subscription (Thei)'
-
+  
+steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
@@ -43,7 +44,6 @@ variables:
      workingDir: 'survey_taker'
      command: 'run build'
 
-steps:
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
