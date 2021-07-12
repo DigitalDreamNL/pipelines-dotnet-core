@@ -30,7 +30,7 @@ steps:
 
 - task: Npm@1
   inputs:
-     workingDir: '.urvey_taker'
+     workingDir: 'survey_taker'
      command: 'install'
 
 - task: Npm@1
