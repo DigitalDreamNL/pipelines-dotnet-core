@@ -28,6 +28,16 @@ steps:
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
 
+- task: Npm@1
+  inputs:
+     workingDir: '/survey_taker'
+     command: 'install'
+
+- task: Npm@1
+  inputs:
+     workingDir: '/survey_taker'
+     command: 'run build'
+
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)'
@@ -38,4 +48,11 @@ steps:
     azureSubscription: $(azureSubscription)
     appName: shipshapesurvey
     appType: webAppLinux
-    package: $(Build.ArtifactStagingDirectory)/**/*.zip
+    package: $(Build.ArtifactStagingDirectory)/**/Survey_Sender.zip
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: $(azureSubscription)
+    appName: shipshapesurvey-questions
+    appType: webAppLinux
+    package: $(Build.ArtifactStagingDirectory)/**/Survey_Question_Provider.zip
