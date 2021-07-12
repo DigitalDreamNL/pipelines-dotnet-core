@@ -30,12 +30,12 @@ steps:
 
 - task: Npm@1
   inputs:
-     workingDir: '/survey_taker'
+     workingDir: '.urvey_taker'
      command: 'install'
 
 - task: Npm@1
   inputs:
-     workingDir: '/survey_taker'
+     workingDir: 'survey_taker'
      command: 'run build'
 
 - task: PublishPipelineArtifact@1
